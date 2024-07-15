@@ -6,7 +6,7 @@ class GetMailbox {
   }
 
   async loadMailBox() {
-    //localStorage.removeItem("emailData");
+    localStorage.removeItem("emailData");
 
     const storedData = localStorage.getItem("emailData");
     if (storedData && typeof storedData === "string") {
@@ -111,7 +111,63 @@ class GetMailbox {
       console.log("Durum güncellenirken hata oluştu:", error);
     }
   }
+  async toggleReadStatus(emailIndex) {
+    try {
+      emailIndex = parseInt(emailIndex, 10);
 
+      if (
+        isNaN(emailIndex) ||
+        emailIndex < 0 ||
+        emailIndex >= this.fetchedMails.length
+      ) {
+        console.log("Geçersiz e-posta indeksi:", emailIndex);
+        return;
+      }
+
+      const mailId = this.fetchedMails[emailIndex].mailId;
+      const dataEmailIndex = this.data.findIndex(
+        (email) => email.mailId === mailId
+      );
+
+      if (dataEmailIndex === -1) {
+        console.log("Mail ID, data dizisinde bulunamadı:", mailId);
+        return;
+      }
+
+      // Önceki durumu logla
+      console.log("Önceki durum:", this.fetchedMails[emailIndex]);
+
+      // Her iki dizideki isRead durumunu değiştir
+      const newIsReadStatus = !this.data[dataEmailIndex].isRead;
+      this.data[dataEmailIndex].isRead = newIsReadStatus;
+      this.fetchedMails[emailIndex].isRead = newIsReadStatus;
+
+      // Yeni durumu logla
+      console.log("Yeni durum:", this.fetchedMails[emailIndex]);
+
+      // Yerel depolamayı güncelle
+      localStorage.setItem("emailData", JSON.stringify(this.data));
+      console.log(
+        "Yerel depolama güncellendi:",
+        localStorage.getItem("emailData")
+      );
+
+      // Kullanıcı arayüzünü güncelle
+      await this.fetchFolder();
+      await this.iterateData();
+
+      // Durum değişikliğini kontrol et
+      const updatedMail = this.fetchedMails[emailIndex];
+      console.log("Güncellenen e-posta durumu:", updatedMail.isStarred);
+      if (updatedMail.isRead === newIsReadStatus) {
+        console.log("Durum başarıyla güncellendi.");
+      } else {
+        console.log("Durum güncellenemedi.");
+      }
+    } catch (error) {
+      console.log("Durum güncellenirken hata oluştu:", error);
+    }
+  }
   iterateData() {
     const selectedFolder = document.getElementById(
       `${this.currentFolder.toLowerCase()}`
@@ -151,7 +207,7 @@ class GetMailbox {
       }">
             ${this.fetchedMails[i].subject}</td>
           </a>
-        <td style="overflow: hidden; text-overflow: ellipsis;">
+        <td>
           <a href="/email.html?folder=${this.currentFolder}&mailId=${
         this.fetchedMails[i].mailId
       }">
@@ -159,7 +215,19 @@ class GetMailbox {
           </a>
         </td>
         <td>${formattedDate}</td>
-        <td>${this.fetchedMails[i].folders}</td>
+        <td>${
+          this.fetchedMails[i].isRead
+            ? `<i data-index="${i}" class="bi bi-envelope-fill"></i>`
+            : `<i data-index="${i}" class="bi bi-envelope-open"></i>`
+        }</td>
+        <td>
+        ${
+          this.fetchedMails[i].isDeleted
+            ? ""
+            : `<i class="bi bi-trash-fill"></i>`
+        }
+        </td>
+        
         </tr>
      `;
     }
@@ -172,6 +240,7 @@ class GetMailbox {
     await mailbox.sortFetchedMailsDescending();
     await mailbox.iterateData();
   }
+
 }
 
 let mailbox;
@@ -216,6 +285,22 @@ document.addEventListener("click", async (event) => {
       await mailbox.toggleStarredStatus(mailIndex);
       event.target.classList.toggle("bi-star");
       event.target.classList.toggle("bi-star-fill");
+    }
+
+    // Okundu işlemleri
+    if (
+      event.target.classList.contains("bi-envelope-fill") ||
+      event.target.classList.contains("bi-envelope-open")
+    ) {
+      const mailIndex = event.target.dataset.index;
+      if (mailIndex === undefined) {
+        console.log("Mail indeksi eksik.");
+        return;
+      }
+
+      await mailbox.toggleReadStatus(mailIndex);
+      event.target.classList.toggle("bi-envelope-fill");
+      event.target.classList.toggle("bi-envelope-open");
     }
   } catch (error) {
     console.log("Tıklama olayında hata oluştu:", error);

@@ -11,6 +11,14 @@ Mail inbox interface
     - Mark read/unread 
     - Delete/undelete mail
     - Send mail
-    - Mark/unmark as important
+    - Mark/unmark as important +++
 
-- sort date desc ++++
+- sort date desc +++
+- need to refactor star/unstar
+- Move email to folder
+
+
+v2
+
+- select multiple items to mark/unmark as important
+- look into IndexedDB to set up an API connection

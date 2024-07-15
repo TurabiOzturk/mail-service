@@ -16,7 +16,7 @@ body {
 /* Column widths (adjust as needed) */
 .inbox-table td:first-child {
   /* Star icon column */
-  width: 2%; /* Minimal width */
+  width: 3%; /* Minimal width */
 }
 .inbox-table td:nth-child(2) {
   /* Sender/recipient column */
@@ -35,7 +35,7 @@ body {
 }
 .inbox-table td:last-child {
   /* Date column */
-  width: 9%; /* Minimal width */
+  width: 5%; /* Minimal width */
   text-align: center;
 }
 .inbox-table td > a {
@@ -43,14 +43,22 @@ body {
   text-decoration: inherit;
 }
 
+.inbox-table td:nth-child(4) {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 /* Bootstrap classes for responsiveness */
 @media (max-width: 768px) {
   /* Adjust for smaller screens */
   .inbox-table td:nth-child(2),
   .inbox-table td:nth-child(3) {
-    width: 30%;
+    width: 25%;
   }
   .inbox-table td:nth-child(4) {
     width: 30%;
+  }
+  .inbox-table td:nth-child(6) {
+    width: 3%;
   }
 }

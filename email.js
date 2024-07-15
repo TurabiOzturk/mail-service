@@ -104,15 +104,21 @@ class GetEmail {
       : (mailContainer.innerHTML = "no emails here!");
 
     bootstrapContainer.innerHTML += `
+     <div>
+        ${
+          this.currentEmail.isStarred
+            ? `<i class="bi bi-star-fill"></i>`
+            : `<i class="bi bi-star"></i>`
+        }
       ${
-        this.currentEmail.isStarred
-          ? '<i class="bi bi-star-fill"></i>'
-          : '<i class="bi bi-star"></i>'
+        this.currentEmail.isRead
+          ? `<i class="bi bi-envelope-fill"></i>`
+          : `<i class="bi bi-envelope-open"></i>`
       }
+     </div>
 
 
-
-    <h1 id="subject">${this.currentEmail.subject}</h1>
+    <h1 class="mt-3 mb-3" id="subject">${this.currentEmail.subject}</h1>
     <div class="d-flex justify-content-between">
         <p>
             <strong>From: ${
@@ -127,8 +133,9 @@ class GetEmail {
               this.currentEmail.to
             }</strong> <span id="recipient"></span>
         </p>
-        ${this.currentEmail.cc.length === 0 
-            ? "asd" 
+        ${
+          this.currentEmail.cc.length === 0
+            ? ""
             : `<p><strong>CC:</strong> ${this.currentEmail.cc.join(", ")}</p>`
         }
         
