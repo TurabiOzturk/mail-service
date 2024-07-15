@@ -71,63 +71,73 @@ class GetEmail {
   }
 
   async getEmailDetails() {
-    this.currentEmail = this.fetchedMails.filter(
-      (email) => email.mailId == this.currentEmailId
+    this.currentEmail = this.fetchedMails.find(
+      (email) => email.mailId === this.currentEmailId
     );
-    console.log(this.currentEmail);
+    console.log(this.currentEmail.cc.toString());
   }
 
   async parseEmail() {
+    console.log(this.currentEmail.isStarred);
     //const selectedFolderTab = document.getElementById(`"${this.currentFolder.toLowerCase()}"`);
-    const mailRow = document.getElementById("mail-row");
+    const mailContainer = document.getElementById("mail-container");
+    const bootstrapContainer = document.createElement("div");
+    bootstrapContainer.classList.add("container");
 
-    const mailTable = document.createElement("table");
-    mailTable.classList.add("inbox-table");
-    const mailTableBody = document.createElement("tbody");
-    mailTable.appendChild(mailTableBody);
+    // suck ass date conversion start
 
-     // suck ass date conversion start
-
-     const timestamp = this.currentEmail[0].timestamp;
-     const date = new Date(timestamp);
-     const options = {  day: "numeric",
-        month: "long",
-        year: "numeric",
-        hour: "numeric",
-        minute: "numeric",
-        hour12: false // Use 12-hour clock (AM/PM)  
-        };
-     const formattedDate = date.toLocaleDateString("en-UK", options);
-     console.log(this.currentFolder);
-     // suck ass date conversion end
+    const timestamp = this.currentEmail.timestamp;
+    const date = new Date(timestamp);
+    const options = {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+      hour12: false, // Use 12-hour clock (AM/PM)
+    };
+    const formattedDate = date.toLocaleDateString("en-UK", options);
+    // suck ass date conversion end
 
     this.fetchedMails.length > 0
-      ? mailRow.appendChild(mailTable)
-      : (mailRow.innerHTML = "no emails here!");
+      ? mailContainer.appendChild(bootstrapContainer)
+      : (mailContainer.innerHTML = "no emails here!");
 
-      mailTableBody.innerHTML += `
-      <td style="font-size: 40px">
-        
-          ${this.currentEmail[0].subject}</td>
-      <tr>
-      <td>${this.currentEmail[0].isStarred
+    bootstrapContainer.innerHTML += `
+      ${
+        this.currentEmail.isStarred
           ? '<i class="bi bi-star-fill"></i>'
           : '<i class="bi bi-star"></i>'
-      }</td>
-      <td>
+      }
+
+
+
+    <h1 id="subject">${this.currentEmail.subject}</h1>
+    <div class="d-flex justify-content-between">
+        <p>
+            <strong>From: ${
+              this.currentEmail.from
+            }</strong> <span id="sender"></span>
+        </p>
+        <p><span id="date">${formattedDate}</span></p>
+    </div>
+    <div class="d-flex justify-content-between">
+        <p>
+            <strong>To: ${
+              this.currentEmail.to
+            }</strong> <span id="recipient"></span>
+        </p>
+        ${this.currentEmail.cc.length === 0 
+            ? "asd" 
+            : `<p><strong>CC:</strong> ${this.currentEmail.cc.join(", ")}</p>`
+        }
         
-          ${this.currentEmail[0].from}</td>
-      
-      <td style="overflow: hidden; text-overflow: ellipsis;">
-
-      ${this.currentEmail[0].body}
-      </td>
-      <td>${formattedDate}</td>
-      </tr>
+    </div>
+    <div class="email-body" id="body">
+        ${this.currentEmail.body}
+    </div>
    `;
-}
-
-  
+  }
 }
 
 const email = new GetEmail();

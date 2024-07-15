@@ -1,17 +1,5 @@
 [
   {
-    "mailId": "email_1",
-    "from": "Alice Johnson <alice.johnson@example.com>",
-    "to": ["Bob Smith <bob.smith@domain.net>"],
-    "cc": ["Claire Brown <claire.brown@domain.net>"],
-    "subject": "Re: Meeting next week?",
-    "body": "Hi Bob,\n\nAre we still on for the meeting next Tuesday at 2 PM?\n\nThanks,\nAlice",
-    "timestamp": "2024-07-11T10:35:00",
-    "folders": ["Inbox"],
-    "isRead": false,
-    "isStarred": false
-  },
-  {
     "mailId": "email_2",
     "from": "John Doe <john.doe@example.com>",
     "to": ["Alice Johnson <alice.johnson@example.com>"],
@@ -25,6 +13,18 @@
     "folders": ["Inbox"],
     "isRead": true,
     "isStarred": true
+  },
+  {
+    "mailId": "email_1",
+    "from": "Alice Johnson <alice.johnson@example.com>",
+    "to": ["Bob Smith <bob.smith@domain.net>"],
+    "cc": ["Claire Brown <claire.brown@domain.net>"],
+    "subject": "Re: Meeting next week?",
+    "body": "Hi Bob,\n\nAre we still on for the meeting next Tuesday at 2 PM?\n\nThanks,\nAlice",
+    "timestamp": "2024-07-11T10:35:00",
+    "folders": ["Inbox"],
+    "isRead": false,
+    "isStarred": false
   },
   {
     "mailId": "email_3",
@@ -54,18 +54,6 @@
     "isStarred": false
   },
   {
-    "mailId": "email_5",
-    "from": "Bob Smith <bob.smith@domain.net>",
-    "to": ["Alice Johnson <alice.johnson@example.com>"],
-    "cc": ["Claire Brown <claire.brown@domain.net>"],
-    "subject": "Re: Meeting next week?",
-    "body": "Alice,\n\nYes, the meeting is confirmed for next Tuesday at 2 PM. Looking forward to it.\n\nBest,\nBob",
-    "timestamp": "2024-07-07T11:20:00",
-    "folders": ["Inbox"],
-    "isRead": true,
-    "isStarred": false
-  },
-  {
     "mailId": "email_6",
     "from": "Alice Johnson <alice.johnson@example.com>",
     "to": ["Bob Smith <bob.smith@domain.net>"],
@@ -77,6 +65,18 @@
     "body": "Great, thanks Bob! See you then.\n\nBest,\nAlice",
     "timestamp": "2024-07-07T11:00:00",
     "folders": ["Sent"],
+    "isRead": true,
+    "isStarred": false
+  },
+  {
+    "mailId": "email_5",
+    "from": "Bob Smith <bob.smith@domain.net>",
+    "to": ["Alice Johnson <alice.johnson@example.com>"],
+    "cc": ["Claire Brown <claire.brown@domain.net>"],
+    "subject": "Re: Meeting next week?",
+    "body": "Alice,\n\nYes, the meeting is confirmed for next Tuesday at 2 PM. Looking forward to it.\n\nBest,\nBob",
+    "timestamp": "2024-07-07T11:20:00",
+    "folders": ["Inbox"],
     "isRead": true,
     "isStarred": false
   },
@@ -93,18 +93,6 @@
     "isStarred": true
   },
   {
-    "mailId": "email_8",
-    "from": "Alice Johnson <alice.johnson@example.com>",
-    "to": ["System Administrator <admin@company.com>"],
-    "cc": [],
-    "subject": "Re: Account Security Alert",
-    "body": "Hello,\n\nThank you for the notification. I have reviewed my account and everything seems fine.\n\nBest regards,\nAlice",
-    "timestamp": "2024-07-06T10:05:00",
-    "folders": ["Sent"],
-    "isRead": true,
-    "isStarred": false
-  },
-  {
     "mailId": "email_9",
     "from": "Bob Smith <bob.smith@domain.net>",
     "to": ["Alice Johnson <alice.johnson@example.com>"],
@@ -115,6 +103,18 @@
     "folders": ["Inbox"],
     "isRead": true,
     "isStarred": true
+  },
+  {
+    "mailId": "email_8",
+    "from": "Alice Johnson <alice.johnson@example.com>",
+    "to": ["System Administrator <admin@company.com>"],
+    "cc": [],
+    "subject": "Re: Account Security Alert",
+    "body": "Hello,\n\nThank you for the notification. I have reviewed my account and everything seems fine.\n\nBest regards,\nAlice",
+    "timestamp": "2024-07-06T10:05:00",
+    "folders": ["Sent"],
+    "isRead": true,
+    "isStarred": false
   },
   {
     "mailId": "email_10",
@@ -188,18 +188,7 @@
     "isRead": true,
     "isStarred": false
   },
-  {
-    "mailId": "email_16",
-    "from": "Alice Johnson <alice.johnson@example.com>",
-    "to": ["Bob Smith <bob.smith@domain.net>"],
-    "cc": [],
-    "subject": "Re: Meeting next week?",
-    "body": "Perfect, Bob. Let's lock in Thursday for the meeting.\n\nBest,\nAlice",
-    "timestamp": "2024-07-02T11:30:00",
-    "folders": ["Sent"],
-    "isRead": true,
-    "isStarred": false
-  },
+
   {
     "mailId": "email_17",
     "from": "Claire Brown <claire.brown@domain.net>",
@@ -209,6 +198,18 @@
     "body": "Hi Alice,\n\nI have reviewed the project plan and made some comments. Could you please take a look?\n\nThanks,\nClaire",
     "timestamp": "2024-07-01T09:45:00",
     "folders": ["Inbox"],
+    "isRead": true,
+    "isStarred": false
+  },
+  {
+    "mailId": "email_16",
+    "from": "Alice Johnson <alice.johnson@example.com>",
+    "to": ["Bob Smith <bob.smith@domain.net>"],
+    "cc": [],
+    "subject": "Re: Meeting next week?",
+    "body": "Perfect, Bob. Let's lock in Thursday for the meeting.\n\nBest,\nAlice",
+    "timestamp": "2024-07-02T11:30:00",
+    "folders": ["Sent"],
     "isRead": true,
     "isStarred": false
   },
