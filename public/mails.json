@@ -159,10 +159,10 @@
     "subject": "Re: Employee Benefits Update",
     "body": "Hello,\n\nThank you for the update. I will review the document and provide feedback by end of week.\n\nBest regards,\nAlice",
     "timestamp": "2024-07-04T11:30:00",
-    "folders": ["Sent"],
+    "folders": ["Deleted"],
     "isRead": true,
     "isStarred": false,
-    "isDeleted": false
+    "isDeleted": true
   },
   {
     "mailId": "email_13",
@@ -172,10 +172,10 @@
     "subject": "Weekly Updates",
     "body": "Dear Alice,\n\nHere are this week's updates:\n\n- New product launch\n- Summer sale announcement\n\nBest regards,\nNewsletter",
     "timestamp": "2024-07-03T08:00:00",
-    "folders": ["Inbox"],
+    "folders": ["Deleted"],
     "isRead": true,
     "isStarred": false,
-    "isDeleted": false
+    "isDeleted": true
   },
   {
     "mailId": "email_14",

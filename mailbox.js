@@ -10,14 +10,12 @@ export class Mailbox {
       localData !== "undefined"
     ) {
       this.currentFolder = localData;
-      console.log(this.currentFolder);
     } else {
       this.currentFolder = "Inbox";
     }
   }
 
   async fetchMails() {
-    // localStorage.removeItem("emailData");
     const localData = localStorage.getItem("emails");
     if (
       localData &&
@@ -55,8 +53,16 @@ export class Mailbox {
       `${this.currentFolder.toLowerCase()}`
     );
 
+    const tabTriggerEl = document.querySelector(
+      "#" + this.currentFolder.toLowerCase() + "-tab"
+    );
+    const tab = new Tab(tabTriggerEl);
+    tab.show();
+
     if (emails.length === 0) {
       selectedFolder.innerHTML = "No emails here";
+      console.log(this.currentFolder);
+      this.updateDatabase();
       return;
     }
 
@@ -74,8 +80,8 @@ export class Mailbox {
           <tr id="${i}">
           <td>${
             email.isStarred
-              ? `<i data-index="${email.mailId}" class="bi bi-star-fill"></i>`
-              : `<i data-index="${email.mailId}" class="bi bi-star"></i>`
+              ? `<i data-index="${email.mailId}" class="bi bi-star-fill star-folder"></i>`
+              : `<i data-index="${email.mailId}" class="bi bi-star star-folder"></i>`
           }</td>
   
           <td>
@@ -103,8 +109,8 @@ export class Mailbox {
           })}</td>
           <td>${
             email.isRead
-              ? `<i data-index="${email.mailId}" class="bi bi-envelope-fill"></i>`
-              : `<i data-index="${email.mailId}" class="bi bi-envelope-open"></i>`
+              ? `<i data-index="${email.mailId}" class="bi bi-envelope-fill envelope-folder"></i>`
+              : `<i data-index="${email.mailId}" class="bi bi-envelope-open envelope-folder"></i>`
           }</td>
           <td>
           ${email.isDeleted ? "" : `<i class="bi bi-trash-fill"></i>`}
@@ -115,10 +121,6 @@ export class Mailbox {
     }
 
     selectedFolder.append(table);
-  
-    const tabTriggerEl = document.querySelector("#" + this.currentFolder.toLowerCase() + "-tab");
-    const tab = new Tab(tabTriggerEl);
-    tab.show();
 
     this.updateDatabase();
   }
@@ -137,13 +139,13 @@ export class Mailbox {
      <div>
         ${
           email.isStarred
-            ? `<i class="bi bi-star-fill"></i>`
-            : `<i class="bi bi-star"></i>`
+            ? `<i data-index="${email.mailId}" class="bi bi-star-fill star-email"></i>`
+            : `<i data-index="${email.mailId}" class="bi bi-star star-email"></i>`
         }
       ${
         email.isRead
-          ? `<i class="bi bi-envelope-fill"></i>`
-          : `<i class="bi bi-envelope-open"></i>`
+          ? `<i data-index="${email.mailId}" class="bi bi-envelope-fill envelope-email"></i>`
+          : `<i data-index="${email.mailId}" class="bi bi-envelope-open envelope-email"></i>`
       }
      </div>
 
@@ -185,18 +187,28 @@ export class Mailbox {
     this.updateDatabase();
   }
 
-  toggleStar(mailId) {
+  toggleStar(mailId, mailBox) {
     const idx = this.findIndexByMailId(mailId);
     this.emails[idx].isStarred = !this.emails[idx].isStarred;
+    if (mailBox) {
+      this.updateView();
+    } else {
+      console.log(mailBox);
+    }
+    this.updateDatabase();
 
-    this.updateView();
+    console.log(this.emails[idx].isStarred);
   }
 
-  toggleRead(mailId) {
+  toggleRead(mailId, mailBox) {
     const idx = this.findIndexByMailId(mailId);
     this.emails[idx].isRead = !this.emails[idx].isRead;
-
-    this.updateView();
+    if (mailBox) {
+      console.log(mailBox);
+      this.updateView();
+    } else {
+    }
+    this.updateDatabase();
   }
 
   delete(mailId) {
@@ -230,15 +242,5 @@ export class Mailbox {
   updateView() {
     this.updateDatabase();
     this.viewFolder(this.currentFolder);
-  }
-
-  triggerTabClick(tabId) {
-    // const tabTriggerEl = document.getElementById(tabId);
-    // if (tabTriggerEl) {
-    //   const clickEvent = new MouseEvent("click", {
-    //     cancelable: false,
-    //   });
-    //   tabTriggerEl.dispatchEvent(clickEvent);
-    // }
   }
 }

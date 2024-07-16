@@ -1,12 +1,9 @@
 import { Mailbox } from "./mailbox";
-import Tab from 'bootstrap/js/dist/tab';
-
 const mailbox = new Mailbox();
 // Fetch initial emails
 (async () => {
-  await mailbox.fetchMails();
-  await mailbox.viewFolder(mailbox.currentFolder);
-  console.log(mailbox.currentFolder);
+  mailbox.fetchMails();
+  mailbox.viewFolder(mailbox.currentFolder);
 })();
 
 document.addEventListener("click", async (event) => {
@@ -16,10 +13,7 @@ document.addEventListener("click", async (event) => {
   }
 
   // Yıldız tıklama işlemleri
-  if (
-    event.target.classList.contains("bi-star") ||
-    event.target.classList.contains("bi-star-fill")
-  ) {
+  if (event.target.classList.contains("star-folder")) {
     const mailId = event.target.dataset.index;
 
     mailbox.toggleStar(mailId);
@@ -28,10 +22,7 @@ document.addEventListener("click", async (event) => {
   }
 
   // Okundu işlemleri
-  if (
-    event.target.classList.contains("bi-envelope-fill") ||
-    event.target.classList.contains("bi-envelope-open")
-  ) {
+  if (event.target.classList.contains("envelope-folder")) {
     const mailId = event.target.dataset.index;
 
     mailbox.toggleRead(mailId);
