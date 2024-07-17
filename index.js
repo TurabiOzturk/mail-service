@@ -29,4 +29,25 @@ document.addEventListener("click", async (event) => {
     event.target.classList.toggle("bi-envelope-fill");
     event.target.classList.toggle("bi-envelope-open");
   }
+
+  // delete mail
+  if(event.target.classList.contains("delete-folder")){
+    const mailId = event.target.dataset.index;
+    
+    mailbox.delete(mailId)
+    event.target.classList.toggle("bi-envelope-arrow-up-fill");
+    event.target.classList.toggle("bi-trash-fill");    
+  }
+
+  if(event.target.classList.contains("undelete-folder")){
+    const mailId = event.target.dataset.index;
+    
+    mailbox.undelete(mailId)
+    event.target.classList.toggle("bi-envelope-arrow-up-fill");
+    event.target.classList.toggle("bi-trash-fill");    
+  }
+
+
+
+  
 });

@@ -4,7 +4,7 @@ function validateUrlParams() {
   const urlParams = new URLSearchParams(window.location.search);
   const mailId = urlParams.get("mailId");
   const folder = urlParams.get("folder");
-  const allowedFolders = ["Inbox", "Sent", "Drafts"]; // Your allowed folder names
+  const allowedFolders = ["Inbox", "Sent", "Draft", "Deleted"]; // Your allowed folder names
 
   // Check if both parameters are present
   if (!mailId || !folder) {

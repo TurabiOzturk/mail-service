@@ -16,6 +16,8 @@ export class Mailbox {
   }
 
   async fetchMails() {
+    // let localData;
+    // localStorage.removeItem("emailData");
     const localData = localStorage.getItem("emails");
     if (
       localData &&
@@ -113,7 +115,11 @@ export class Mailbox {
               : `<i data-index="${email.mailId}" class="bi bi-envelope-open envelope-folder"></i>`
           }</td>
           <td>
-          ${email.isDeleted ? "" : `<i class="bi bi-trash-fill"></i>`}
+          ${
+            email.isDeleted
+              ? `<i data-index="${email.mailId}" class="bi bi-envelope-arrow-up-fill undelete-folder"></i>`
+              : `<i data-index="${email.mailId}" class="bi bi-trash-fill delete-folder"></i>`
+          }
           </td>
           
           </tr>
@@ -172,9 +178,9 @@ export class Mailbox {
             <strong>To: ${email.to}</strong> <span id="recipient"></span>
         </p>
         ${
-          email.cc.length === 0
-            ? ""
-            : `<p><strong>CC:</strong> ${email.cc.join(", ")}</p>`
+          email.cc.length !== 0
+            ? `<p><strong>CC:</strong> ${email.cc.join(", ")}</p>`
+            : ""
         }
         
     </div>
@@ -211,15 +217,40 @@ export class Mailbox {
     this.updateDatabase();
   }
 
-  delete(mailId) {
-    this.emails[this.findIndexByMailId(mailId)].isDeleted = true;
+  delete(mailId, mailBox) {
+    const idx = this.findIndexByMailId(mailId);
 
-    this.updateView();
+    this.emails[idx].isDeleted = !this.emails[idx].isDeleted;
+
+    if (mailBox) {
+      console.log(mailBox);
+      this.updateView();
+    } else {
+    }
+    this.moveToFolder(mailId, "Deleted");
+    this.updateDatabase();
   }
 
-  moveToFolder(mailId, targetFolder) {
-    this.emails[this.findIndexByMailId(mailId)].folders = [targetFolder];
+  undelete(mailId, mailBox) {
+    const idx = this.findIndexByMailId(mailId);
 
+    this.emails[idx].isDeleted = !this.emails[idx].isDeleted;
+
+    if (mailBox) {
+      console.log(mailBox);
+      this.updateView();
+    } else {
+    }
+    this.moveToFolder(mailId, this.emails[idx].originalFolder);
+    this.updateDatabase();
+  }
+
+  moveToFolder(mailId, targetFolder, originalFolder) {
+    console.log(this.emails[this.findIndexByMailId(mailId)]);
+    
+    this.emails[this.findIndexByMailId(mailId)].folders = [targetFolder ?? "Inbox"];
+
+    console.log(this.emails[this.findIndexByMailId(mailId)]);
     this.updateView();
   }
 
