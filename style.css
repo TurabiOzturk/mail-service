@@ -62,3 +62,7 @@ body {
     width: 3%;
   }
 }
+
+ul#folderTabs .nav-link::first-letter {
+  text-transform: capitalize;
+}

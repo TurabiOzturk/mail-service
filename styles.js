@@ -21,7 +21,7 @@ mainContainer.style = `height: ${vh}px`;
 bodyRow.style = `height: ${bodyRowHeight}px`;
 
 // Get references to the inbox element and initial dimensions
-const inboxElement = document.getElementById("inbox");
+const inboxElement = document.getElementById("Inbox");
 let prevViewportWidth = window.innerWidth;
 let prevViewportHeight = window.innerHeight;
 let prevInboxWidth = inboxElement.offsetWidth;

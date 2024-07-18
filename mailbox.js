@@ -13,6 +13,12 @@ export class Mailbox {
     } else {
       this.currentFolder = "Inbox";
     }
+    const folders = localStorage.getItem("folders");
+    if (folders && typeof folders === "string" && folders !== "undefined") {
+      this.folders = folders;
+    } else {
+      this.folders = ["Inbox", "Sent", "Draft", "Deleted"];
+    }
   }
 
   async fetchMails() {
@@ -42,7 +48,55 @@ export class Mailbox {
   }
 
   viewFolder(folderName) {
+    //start setting up folder tabs
+    const folderTabs = document.getElementById("folderTabs");
+
+    //fixing space issues that might happen in custom folder names
+    for (let i = 0; i < this.folders.length; i++) {
+      this.folders[i] = this.folders[i].split(" ").join("_");
+    }
+    console.log(this.folders);
+
+    folderTabs.innerHTML = "";
+    for (let i = 0; i < this.folders.length; i++) {
+      folderTabs.innerHTML += `
+        <li class="nav-item" role="presentation">
+            <button
+                class="nav-link folders"
+                id="${this.folders[i]}-tab"
+                data-bs-toggle="tab"
+                data-bs-target="#${this.folders[i]}"
+                type="button"
+                role="tab"
+                aria-controls="${this.folders[i]}"
+                aria-selected="true"
+                data-folder="${this.folders[i]}"
+            >
+            ${this.folders[i].split("_").join(" ")}
+            </button>
+        </li>
+        `;
+    }
+
+    //finish setting up folder tabs
+
+    //start setting up panes
+    const folderPanes = document.getElementById("folderPanes");
+    folderPanes.innerHTML = "";
+    for (let i = 0; i < this.folders.length; i++) {
+      folderPanes.innerHTML += `
+        <div
+            class="tab-pane fade show"
+            id="${this.folders[i]}"
+            role="tabpanel"
+            aria-labelledby="${this.folders[i]}-tab"
+            >
+        </div>
+          `;
+    }
+    //finish setting up panes
     this.currentFolder = folderName;
+
     const emails = this.emails.filter(
       (q) => q.folders.filter((q2) => q2 === this.currentFolder).length > 0
     );
@@ -51,19 +105,16 @@ export class Mailbox {
       return new Date(x.timestamp) < new Date(y.timestamp) ? 1 : -1;
     });
 
-    const selectedFolder = document.getElementById(
-      `${this.currentFolder.toLowerCase()}`
-    );
+    const selectedFolder = document.getElementById(`${this.currentFolder}`);
 
     const tabTriggerEl = document.querySelector(
-      "#" + this.currentFolder.toLowerCase() + "-tab"
+      "#" + this.currentFolder + "-tab"
     );
     const tab = new Tab(tabTriggerEl);
     tab.show();
 
     if (emails.length === 0) {
       selectedFolder.innerHTML = "No emails here";
-      console.log(this.currentFolder);
       this.updateDatabase();
       return;
     }
@@ -74,6 +125,7 @@ export class Mailbox {
     table.classList.add("inbox-table");
     const body = document.createElement("tbody");
     table.appendChild(body);
+    document.title = "Mailbox - MailService";
 
     for (let i = 0; i < emails.length; i++) {
       const email = emails[i];
@@ -132,6 +184,23 @@ export class Mailbox {
   }
 
   viewEmail(mailId) {
+    const foldersDropDown = document.getElementById("foldersDropDown");
+    foldersDropDown.innerHTML = "";
+
+    for (let i = 0; i < this.folders.length; i++) {
+      foldersDropDown.innerHTML += `
+        <li>
+            <a class="dropdown-item ${
+                this.folders[i] === this.currentFolder
+                  ? `active`
+                  : ``
+              }" href="#" aria-current="page">
+            ${this.folders[i]}
+            </a>
+        </li>
+          `;
+    }
+
     const email = this.emails[this.findIndexByMailId(mailId)];
 
     const mailContainer = document.getElementById("mail-container");
@@ -141,6 +210,7 @@ export class Mailbox {
     }
     const bootstrapContainer = document.createElement("div");
     bootstrapContainer.classList.add("container");
+    document.title = `${email.subject} - MailService`;
     bootstrapContainer.innerHTML += `
      <div>
         ${
@@ -152,6 +222,11 @@ export class Mailbox {
         email.isRead
           ? `<i data-index="${email.mailId}" class="bi bi-envelope-fill envelope-email"></i>`
           : `<i data-index="${email.mailId}" class="bi bi-envelope-open envelope-email"></i>`
+      }
+      ${
+        email.isDeleted
+          ? `<i data-index="${email.mailId}" class="bi bi-envelope-arrow-up-fill undelete-email"></i>`
+          : `<i data-index="${email.mailId}" class="bi bi-trash-fill delete-email"></i>`
       }
      </div>
 
@@ -199,18 +274,14 @@ export class Mailbox {
     if (mailBox) {
       this.updateView();
     } else {
-      console.log(mailBox);
     }
     this.updateDatabase();
-
-    console.log(this.emails[idx].isStarred);
   }
 
   toggleRead(mailId, mailBox) {
     const idx = this.findIndexByMailId(mailId);
     this.emails[idx].isRead = !this.emails[idx].isRead;
     if (mailBox) {
-      console.log(mailBox);
       this.updateView();
     } else {
     }
@@ -219,15 +290,8 @@ export class Mailbox {
 
   delete(mailId, mailBox) {
     const idx = this.findIndexByMailId(mailId);
-
     this.emails[idx].isDeleted = !this.emails[idx].isDeleted;
-
-    if (mailBox) {
-      console.log(mailBox);
-      this.updateView();
-    } else {
-    }
-    this.moveToFolder(mailId, "Deleted");
+    this.moveToFolder(mailId, "Deleted", mailBox);
     this.updateDatabase();
   }
 
@@ -236,22 +300,20 @@ export class Mailbox {
 
     this.emails[idx].isDeleted = !this.emails[idx].isDeleted;
 
-    if (mailBox) {
-      console.log(mailBox);
-      this.updateView();
-    } else {
-    }
-    this.moveToFolder(mailId, this.emails[idx].originalFolder);
+    this.moveToFolder(mailId, "Inbox", mailBox);
     this.updateDatabase();
   }
 
-  moveToFolder(mailId, targetFolder, originalFolder) {
-    console.log(this.emails[this.findIndexByMailId(mailId)]);
-    
-    this.emails[this.findIndexByMailId(mailId)].folders = [targetFolder ?? "Inbox"];
-
-    console.log(this.emails[this.findIndexByMailId(mailId)]);
-    this.updateView();
+  moveToFolder(mailId, targetFolder, mailBox) {
+    this.emails[this.findIndexByMailId(mailId)].folders = [
+      targetFolder ?? "Inbox",
+    ];
+    if (mailBox === true) {
+      this.updateView();
+    } else {
+      this.updateDatabase();
+    }
+    //this.updateView();
   }
 
   // private functions

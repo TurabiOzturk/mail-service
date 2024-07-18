@@ -34,7 +34,7 @@ document.addEventListener("click", async (event) => {
   if(event.target.classList.contains("delete-folder")){
     const mailId = event.target.dataset.index;
     
-    mailbox.delete(mailId)
+    mailbox.delete(mailId, true)
     event.target.classList.toggle("bi-envelope-arrow-up-fill");
     event.target.classList.toggle("bi-trash-fill");    
   }
@@ -42,12 +42,8 @@ document.addEventListener("click", async (event) => {
   if(event.target.classList.contains("undelete-folder")){
     const mailId = event.target.dataset.index;
     
-    mailbox.undelete(mailId)
+    mailbox.undelete(mailId, true)
     event.target.classList.toggle("bi-envelope-arrow-up-fill");
     event.target.classList.toggle("bi-trash-fill");    
   }
-
-
-
-  
 });
