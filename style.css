@@ -1,0 +1,68 @@
+body {
+  background-color: rgba(2, 5, 8, 0.626);
+}
+
+#main-container {
+  padding-bottom: 16px;
+  box-sizing: border-box;
+}
+
+/* General table1 styling */
+.inbox-table {
+  table-layout: fixed; /* Ensures equal column widths */
+  width: 100%; /* table1 takes full available width */
+}
+
+/* Column widths (adjust as needed) */
+.inbox-table td:first-child {
+  /* Star icon column */
+  width: 3%; /* Minimal width */
+}
+.inbox-table td:nth-child(2) {
+  /* Sender/recipient column */
+  width: 25%;
+}
+.inbox-table td:nth-child(3) {
+  /* Subject column */
+  width: 25%;
+}
+.inbox-table td:nth-child(4) {
+  /* Email body column */
+  width: 39%; /* More space for the body */
+  overflow: hidden;
+  text-overflow: ellipsis; /* Ellipsis for overflow */
+  white-space: nowrap; /* Prevents text wrapping */
+}
+.inbox-table td:last-child {
+  /* Date column */
+  width: 5%; /* Minimal width */
+  text-align: center;
+}
+.inbox-table td > a {
+  color: inherit;
+  text-decoration: inherit;
+}
+
+.inbox-table td:nth-child(4) {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Bootstrap classes for responsiveness */
+@media (max-width: 768px) {
+  /* Adjust for smaller screens */
+  .inbox-table td:nth-child(2),
+  .inbox-table td:nth-child(3) {
+    width: 25%;
+  }
+  .inbox-table td:nth-child(4) {
+    width: 30%;
+  }
+  .inbox-table td:nth-child(6) {
+    width: 3%;
+  }
+}
+
+ul#folderTabs .nav-link::first-letter {
+  text-transform: capitalize;
+}

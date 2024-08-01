@@ -1,0 +1,27 @@
+todo:
+
+Mail inbox interface
+
+•⁠  ⁠Folders
+    - Inbox +++
+    - ⁠Sent +++
+    - ⁠Deleted +++
+
+•⁠  ⁠⁠Actions
+    - Mark read/unread +++ 
+    - Delete/undelete mail +++
+    - Send mail
+    - Mark/unmark as important +++ 
+
+- sort date desc +++
+- need to refactor star/unstar +++
+- Move email to from one folder to another  
+    - create new folder
+- return to current folder on return from email detail +++
+    - bring the contents of currentFolder +++
+- print pages by their id from main.js to index.html
+- allow user to add/remove folders
+
+v2
+
+- select multiple items to mark/unmark as important
