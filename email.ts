@@ -36,6 +36,19 @@ const returnedUrlParams = validateUrlParams()!;
 
 mailbox.viewEmail(returnedUrlParams.mailId);
 
+//start send email
+const emailForm = document.getElementById("sendEmailForm") as HTMLFormElement;
+
+emailForm.addEventListener("submit", function (event) {
+  event.preventDefault();
+
+  if (emailForm.checkValidity()) {
+    mailbox.sendEmail();
+  }
+});
+
+//end send email
+
 document.addEventListener("click", async (event) => {
   const target = event.target as HTMLElement;
 
@@ -75,12 +88,7 @@ document.addEventListener("click", async (event) => {
   }
 
   if (target.classList.contains("folders-dropdown")) {
-    mailbox.moveToFolder(
-      target.dataset.index!,
-      target.textContent!,
-      false
-    );
+    mailbox.moveToFolder(target.dataset.index!, target.textContent!, false);
     event.preventDefault();
   }
 });
-

@@ -11,11 +11,12 @@ Mail inbox interface
     - Mark read/unread +++ 
     - Delete/undelete mail +++
     - Send mail
+        - deconstruct multiple 'to' emails into array
     - Mark/unmark as important +++ 
 
 - sort date desc +++
 - need to refactor star/unstar +++
-- Move email to from one folder to another  
+- Move email to from one folder to another +++
     - create new folder
 - return to current folder on return from email detail +++
     - bring the contents of currentFolder +++

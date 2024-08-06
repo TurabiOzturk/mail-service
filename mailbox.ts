@@ -1,7 +1,7 @@
 import Tab from "bootstrap/js/dist/tab";
 
 interface Email {
-  mailId: number;
+  mailId: string;
   from: string;
   to: string[];
   cc: string[];
@@ -15,12 +15,11 @@ interface Email {
 }
 
 export class Mailbox {
-  emails: Email[];
+  emails: Email[] = [];
   currentFolder: string;
   folders: string[];
 
   constructor() {
-    this.emails = [];
     const localData = localStorage.getItem("currentFolder");
     if (localData) {
       this.currentFolder = localData;
@@ -42,6 +41,7 @@ export class Mailbox {
       localStorage.setItem("folders", JSON.stringify(this.folders));
     }
   }
+
   async fetchMails() {
     const localData = localStorage.getItem("emails");
     if (localData) {
@@ -61,6 +61,48 @@ export class Mailbox {
         alert(`An error occurred while fetching data: ${error.message}`);
       }
     }
+  }
+
+  sendEmail() {
+    const emailForm = document.getElementById(
+      "sendEmailForm"
+    ) as HTMLFormElement;
+    const sendEmailTo = (
+      document.getElementById("formSendEmailTo") as HTMLFormElement
+    ).value;
+    const sendEmailCc = (
+      document.getElementById("formSendEmailCc") as HTMLFormElement
+    ).value;
+    const sendEmailSubject = (
+      document.getElementById("formSendEmailSubject") as HTMLFormElement
+    ).value;
+    const sendEmailBody = (
+      document.getElementById("formSendEmailBody") as HTMLFormElement
+    ).value;
+
+    const newEmail: Email = {
+      mailId: "email_" + (Date.now() % 100000).toString(),
+      from: "Amazing Developer",
+      to: [sendEmailTo],
+      cc: [sendEmailCc],
+      subject: sendEmailSubject,
+      body: sendEmailBody,
+      timestamp: new Date().toISOString(),
+      folders: ["Sent"],
+      isRead: false,
+      isStarred: false,
+      isDeleted: false,
+    };
+
+    this.emails.push(newEmail);
+    this.updateDatabase();
+
+    // Optionally, clear the form after submission
+    emailForm.reset();
+
+    alert("Email sent successfully!");
+
+    console.log(newEmail);
   }
 
   viewFolder(folderName: string) {
@@ -254,7 +296,7 @@ export class Mailbox {
     <h1 class="mt-3 mb-3" id="subject">${email.subject}</h1>
     <div class="d-flex justify-content-between">
         <p>
-            <strong>From: ${email.from}</strong> <span id="sender"></span>
+            <strong>From: </strong> <span id="sender">${email.from}</span>
         </p>
         <p><span id="date">${new Date(email.timestamp).toLocaleDateString(
           "en-UK",
@@ -270,11 +312,11 @@ export class Mailbox {
     </div>
     <div class="d-flex justify-content-between">
         <p>
-            <strong>To: ${email.to}</strong> <span id="recipient"></span>
+            <strong>To: </strong> <span id="recipient">${email.to}</span>
         </p>
         ${
           email.cc.length !== 0
-            ? `<p><strong>CC:</strong> ${email.cc.join(", ")}</p>`
+            ? `<p><strong>CC:</strong> ${email.cc.map(this.escapeHTMLTag).join(', </br> ')}</p>`
             : ""
         }
         
@@ -349,13 +391,17 @@ export class Mailbox {
     return idx;
   }
 
-  updateDatabase() {
+  updateDatabase(): void {
     localStorage.setItem("emails", JSON.stringify(this.emails));
     localStorage.setItem("currentFolder", this.currentFolder);
   }
 
-  updateView() {
+  updateView(): void {
     this.updateDatabase();
     this.viewFolder(this.currentFolder);
+  }
+
+  escapeHTMLTag(str: string): string {
+    return str.replace(/</g, "&lt;").replace(/>/g, "&gt;");
   }
 }

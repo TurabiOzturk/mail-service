@@ -29,8 +29,7 @@
             data-bs-toggle="dropdown"
             aria-expanded="true"
           >
-          <i class="bi bi-folder-symlink-fill"></i>
-
+            <i class="bi bi-folder-symlink-fill"></i>
           </a>
           <ul
             class="dropdown-menu text-small shadow"
@@ -58,8 +57,7 @@
         </div>
 
         <div class="d-flex align-items-center">
-          <div class="w-100 me-3">
-          </div>
+          <div class="w-100 me-3"></div>
 
           <div class="flex-shrink-0 dropdown">
             <a
@@ -89,6 +87,43 @@
     </header>
     <div class="container mt-5">
       <div class="col-md-12" id="mail-container"></div>
+      <form id="sendEmailForm">
+        <div class="form-group">
+          <label for="formSendEmailTo">To:</label>
+          <input
+            type="email"
+            class="form-control"
+            id="formSendEmailTo"
+            placeholder="Enter email"
+            required
+          />
+          <label for="formSendEmailCc">Cc:</label>
+          <input
+            type="email"
+            class="form-control"
+            id="formSendEmailCc"
+            placeholder="Enter email"
+          />  
+          <label for="formSendEmailSubject">Subject:</label>
+          <input
+            type="text"
+            class="form-control"
+            id="formSendEmailSubject"
+            placeholder="Subject"
+            required
+          />
+          <label for="formSendEmailBody">Body:</label>
+          <input
+            type="text"
+            class="form-control"
+            id="formSendEmailBody"
+            placeholder="Body"
+            required
+          />
+          
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
     </div>
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
@@ -96,6 +131,6 @@
       crossorigin="anonymous"
     ></script>
 
-    <script src="email.js" type="module"></script>
+    <script src="email.ts" type="module"></script>
   </body>
 </html>
